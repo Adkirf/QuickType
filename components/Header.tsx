@@ -16,7 +16,7 @@ export default function Header() {
   }, [user])
 
   return (
-    <header className="bg-primary text-primary-foreground p-4">
+    <header className="bg-primary h-[10vh] flex text-primary-foreground p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
           QuickType

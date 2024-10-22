@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-secondary-foreground p-4 mt-auto">
+    <footer className="bg-secondary h-[10vh] text-secondary-foreground p-4 mt-auto">
       <div className="container mx-auto flex justify-center space-x-4">
         <Link href="/privacy" className="hover:underline">
           Privacy Policy

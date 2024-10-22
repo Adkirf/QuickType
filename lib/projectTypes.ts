@@ -5,11 +5,7 @@ export type UserProfile = {
     photoURL?: string;
 };
 
-export type Document = {
-    id: string;
-    title: string;
-    content: string;
-};
+
 
 export interface MarkdownFile {
     name: string;

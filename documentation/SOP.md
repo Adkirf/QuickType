@@ -27,7 +27,7 @@ Globals -> color theme (grey scale, modern blue accent), h1,h2,h3, p
 - creeate the necessary logic to process the retrieved data
 - display the markdown file in the training-page.tsx file
 
-4. Translation
+
 
 4. UI/UX
 components: landing, profile, training
@@ -38,3 +38,4 @@ Evaluation algorithm
 6. Outlook
 Recommendation algorithm
 pvp
+multilanguage

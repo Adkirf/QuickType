@@ -1,6 +1,6 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, } from 'firebase/firestore';
 import { auth, db } from './config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, deleteUser, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth';
+import { signOut, deleteUser, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth';
 import { createUserProfile } from './firestore';
 import { UserProfile } from '../projectTypes';
 

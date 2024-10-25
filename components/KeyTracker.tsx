@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from './ui/button';
 
 interface KeyTrackerProps {
@@ -28,7 +28,7 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
         const currentTime = event.timeStamp;
 
         // Check if any home row key was recently released
-        for (let key in keyPressTimes) {
+        for (const key in keyPressTimes) {
             if (keyPressTimes[key].keyUpTime) {
                 const timeDiff = currentTime - keyPressTimes[key].keyUpTime;
 
@@ -49,7 +49,7 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
             timeMap[key][nextKey] = { total: timeDiff, count: 1, times: [timeDiff] };
         } else {
             // Update running average and store times for deviation calculation
-            let data = timeMap[key][nextKey];
+            const data = timeMap[key][nextKey];
             data.total += timeDiff;
             data.count++;
             data.times.push(timeDiff);
@@ -59,10 +59,10 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
     const processTimeMap = () => {
         const stats: { [key: string]: { [key: string]: { avgTime: number, deviation: number } } } = {};
 
-        for (let key in timeMap) {
+        for (const key in timeMap) {
             stats[key] = {};
 
-            for (let nextKey in timeMap[key]) {
+            for (const nextKey in timeMap[key]) {
                 const data = timeMap[key][nextKey];
                 const avgTime = data.total / data.count;
 

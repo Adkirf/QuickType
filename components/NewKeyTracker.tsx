@@ -86,7 +86,7 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
 
     // Filter function to keep only finger region switches
     function filterRegionSwitches(sequence: { key: string, time: number }[]) {
-        let switches = [];
+        const switches = [];
         for (let i = 1; i < sequence.length; i++) {
             if (sequence[i - 1].key !== sequence[i].key && inDifferentRegion(sequence[i - 1].key, sequence[i].key)) {
                 switches.push(sequence[i - 1], sequence[i]);
@@ -114,7 +114,7 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
     }
 
     // Calculate average region switch speed and attribute it to the relevant home key
-    function calculateRegionSwitchSpeed(regionSwitches: { key: string, time: number }[], side: 'left' | 'right') {
+    function calculateRegionSwitchSpeed(regionSwitches: { key: string, time: number }[], side: "left" | "right") {
         for (let i = 0; i < regionSwitches.length - 1; i++) {
             const { key: key1, time: time1 } = regionSwitches[i];
             const { key: key2, time: time2 } = regionSwitches[i + 1];
@@ -149,9 +149,9 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
     }
 
     // Function to map region to home key
-    function getHomeKeyForRegion(key: string, side: 'left' | 'right'): string {
+    function getHomeKeyForRegion(key: string, side: "left" | "right"): string {
         const lowerKey = key.toLowerCase();
-        const fingerRegions = side === 'left' ? keyboardMap.leftFingerRegions : keyboardMap.rightFingerRegions;
+        const fingerRegions = side === "left" ? keyboardMap.leftFingerRegions : keyboardMap.rightFingerRegions;
 
         for (const [homeKey, keys] of Object.entries(fingerRegions)) {
             if (keys.includes(lowerKey)) {
@@ -160,7 +160,7 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
         }
 
         // If the key is not found in any region, return an empty string or handle the error as needed
-        return '';
+        return "";
     }
 
     useEffect(() => {

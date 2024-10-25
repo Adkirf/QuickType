@@ -1,5 +1,3 @@
-
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -46,7 +44,7 @@ export default async function LandingPagComponent() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-center text-gray-600">
-                        We're working hard to bring you the best typing experience for legal professionals. Stay tuned!
+                        We&apos;re working hard to bring you the best typing experience for legal professionals. Stay tuned!
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">

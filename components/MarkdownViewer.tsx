@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import NewKeyTracker from './NewKeyTracker' // Import the NewKeyTracker component instead of KeyTracker
-import { Button } from './ui/button'
 
 interface MarkdownViewerProps {
     content: string
@@ -21,8 +20,8 @@ export default function MarkdownViewer({ content }: MarkdownViewerProps) {
     const [lastInput, setLastInput] = useState('')
     const missingCharRef = useRef<HTMLSpanElement>(null)
 
-    const keyPressTimes = useRef<{ [key: string]: { keyUpTime?: number } }>({}).current;
-    const timeMap = useRef<{ [key: string]: { [key: string]: { total: number, count: number, times: number[] } } }>({}).current;
+    /* const keyPressTimes = useRef<{ [key: string]: { keyUpTime?: number } }>({}).current;
+    const timeMap = useRef<{ [key: string]: { [key: string]: { total: number, count: number, times: number[] } } }>({}).current; */
 
     // Add these new refs
 
@@ -39,7 +38,7 @@ export default function MarkdownViewer({ content }: MarkdownViewerProps) {
         const lines = content.split('\n')
         let currentBatch: ContentBatch | null = null
 
-        lines.forEach((line, index) => {
+        lines.forEach((line) => {
             if (line.trim() === '') {
                 if (currentBatch) {
                     currentBatch.content += '\n'

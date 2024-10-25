@@ -1,8 +1,6 @@
 'use client';
 
 import { useAuth } from '@/components/context/AuthProvider';
-import { updateUserProfile } from '@/lib/firebase/firestore';
-import { useState } from 'react';
 import { ProfilePageComponent } from '@/components/profile-page';
 
 export default function ProfilePage() {

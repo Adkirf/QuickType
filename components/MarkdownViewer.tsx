@@ -164,7 +164,6 @@ export default function MarkdownViewer({ content }: MarkdownViewerProps) {
 
     useEffect(() => {
         if (missingCharRef.current) {
-            console.log(missingCharRef.current?.offsetLeft, missingCharRef.current?.offsetTop)
             missingCharRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
     }, [typedText, currentBatchIndex])
@@ -192,6 +191,7 @@ export default function MarkdownViewer({ content }: MarkdownViewerProps) {
                             {contentBatches.map(renderBatch)}
                         </div>
                     </ScrollArea>
+
                     <NewKeyTracker
                         onKeyPress={handleKeyPress}
                         leftKeySequence={leftKeySequenceRef}

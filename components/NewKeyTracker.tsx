@@ -208,7 +208,7 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
             <input
                 ref={inputRef}
                 type="text"
-                className="opacity-0 absolute top-0 left-0 w-px h-px"
+                className="opacity-0 absolute top-0 left-0 w-full h-full"
             />
         </div>
     );

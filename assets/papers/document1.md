@@ -1,10 +1,7 @@
-# Gründe:
 
-## A.
+Die Beschwerdeführenden wenden sich mit ihrer Verfassungsbeschwerde gegen Regelungen des Gesetzes über das Bundeskriminalamt und die Zusammenarbeit des Bundes und der Länder in kriminalpolizeilichen Angelegenheiten in der Fassung des Gesetzes zur Neustrukturierung des Bundeskriminalamtgesetzes vom 1. Juni 2017, die zum 25. Mai 2018 in Kraft getreten sind. 
 
-Die Beschwerdeführenden wenden sich mit ihrer Verfassungsbeschwerde gegen Regelungen des Gesetzes über das Bundeskriminalamt und die Zusammenarbeit des Bundes und der Länder in kriminalpolizeilichen Angelegenheiten (Bundeskriminalamtgesetz, im Folgenden: BKAG) in der Fassung des Gesetzes zur Neustrukturierung des Bundeskriminalamtgesetzes vom 1. Juni 2017 (BGBl I S. 1354), die zum 25. Mai 2018 in Kraft getreten sind (BGBl I S. 1354). 
-
-Angegriffen ist zum einen die Ermächtigung des Bundeskriminalamts zum Einsatz besonderer Mittel der Datenerhebung zur Abwehr von Gefahren des internationalen Terrorismus, soweit diese eine Überwachung von Kontaktpersonen erlaubt (§ 45 Abs. 1 Satz 1 Nr. 4 i.V.m. § 39 Abs. 2 Nr. 2 BKAG). Zum anderen rügen die Beschwerdeführenden Regelungen zur Weiterverarbeitung bereits erhobener personenbezogener Daten im Informationssystem des Bundeskriminalamts und im polizeilichen Informationsverbund (§ 16 Abs. 1 i.V.m. § 12 Abs. 1 Satz 1 BKAG; § 18 Abs. 1 Nr. 1, 2 und 4, Abs. 2 Nr. 1 und 3 und Abs. 5 i.V.m. § 13 Abs. 3, § 29 BKAG) sowie zu polizeilichen Hinweisen (§ 16 Abs. 6 Nr. 2 auch i.V.m. § 29 Abs. 4 Satz 2 BKAG).
+Angegriffen ist zum einen die Ermächtigung des Bundeskriminalamts zum Einsatz besonderer Mittel der Datenerhebung zur Abwehr von Gefahren des internationalen Terrorismus, soweit diese eine Überwachung von Kontaktpersonen erlaubt. Zum anderen rügen die Beschwerdeführenden Regelungen zur Weiterverarbeitung bereits erhobener personenbezogener Daten im Informationssystem des Bundeskriminalamts und im polizeilichen Informationsverbund sowie zu polizeilichen Hinweisen.
 
 ## I.
 

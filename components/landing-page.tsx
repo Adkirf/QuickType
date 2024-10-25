@@ -1,9 +1,12 @@
+
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import ShowOffViewer from "./ShowOffViewer"
 
-export default function LandingPagComponent() {
+export default async function LandingPagComponent() {
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl">
@@ -14,11 +17,7 @@ export default function LandingPagComponent() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Input
-                        type="text"
-                        placeholder="Start typing here..."
-                        className="w-full text-lg"
-                    />
+                    <ShowOffViewer />
                 </CardContent>
             </Card>
 

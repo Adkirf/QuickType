@@ -24,3 +24,19 @@ export const getLocalFiles = async (): Promise<MarkdownFile[]> => {
         return [];
     }
 };
+
+export const getDefaultMarkdownFile = async (): Promise<MarkdownFile> => {
+    const dirPath = path.join(process.cwd(), 'assets', 'papers');
+    try {
+        const filePath = path.join(dirPath, 'default.md');
+        const content = await fs.readFile(filePath, 'utf-8');
+        return {
+            name: 'default',
+            url: filePath,
+            content: content,
+        };
+    } catch (error) {
+        console.error('Error reading default markdown file:', error);
+        return { name: 'error', url: '', content: '' };
+    }
+}

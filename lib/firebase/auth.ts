@@ -6,6 +6,7 @@ import { UserProfile } from '../projectTypes';
 
 
 export const signInWithGoogle = async (): Promise<UserProfile> => {
+    console.log("change")
     try {
         const provider = new GoogleAuthProvider();
         const result = await signInWithPopup(auth, provider);

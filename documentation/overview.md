@@ -1,7 +1,7 @@
 # Project Structure
 
 ** General ** 
-- Use next.js version 13 app router
+- Use next.js version 14 app router
 - Use shadcn/ui components wherever possible
 - Use globals.css variables whereever possible
 - Use tailwind css for styling

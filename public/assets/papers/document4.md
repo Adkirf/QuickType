@@ -1,0 +1,1 @@
+Die Beschwerdeführenden wenden sich mit ihrer Verfassungsbeschwerde gegen Regelungen des Gesetzes über das Bundeskriminalamt und die Zusammenarbeit des Bundes und der Länder in kriminalpolizeilichen Angelegenheiten in der Fassung des Gesetzes zur Neustrukturierung des Bundeskriminalamtgesetzes vom 1. Juni 2017, die zum 25. Mai 2018 in Kraft getreten sind. 

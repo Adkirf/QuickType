@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { Button } from '../ui/button';
 
 interface KeyTrackerProps {
@@ -10,51 +10,45 @@ interface KeyTrackerProps {
 const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, timeMap }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const homeRow = ['a', 's', 'd', 'f', 'j', 'k', 'l', 'ö'];
+    const homeRow = useMemo(() => ['a', 's', 'd', 'f', 'j', 'k', 'l', 'ö'], []);
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-        const key = event.key.toLowerCase();
-        const currentTime = event.timeStamp;
-
-        // If the key is a home row letter, record keyUp time
-        if (homeRow.includes(key)) {
-            keyPressTimes[key] = { keyUpTime: currentTime };  // Store keyUp time
-        }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-        onKeyPress(event.key);
-        const nextKey = event.key.toLowerCase();
-        const currentTime = event.timeStamp;
-
-        // Check if any home row key was recently released
-        for (const key in keyPressTimes) {
-            if (keyPressTimes[key].keyUpTime) {
-                const timeDiff = currentTime - keyPressTimes[key].keyUpTime;
-
-                console.log("Updating")
-                updateTimeMap(key, nextKey, timeDiff);
-                delete keyPressTimes[key].keyUpTime;
-            }
-        }
-    };
-
-    const updateTimeMap = (key: string, nextKey: string, timeDiff: number) => {
+    const updateTimeMap = useCallback((key: string, nextKey: string, timeDiff: number) => {
         if (!timeMap[key]) {
             timeMap[key] = {};
         }
 
         if (!timeMap[key][nextKey]) {
-            // Initialize with the first time difference
             timeMap[key][nextKey] = { total: timeDiff, count: 1, times: [timeDiff] };
         } else {
-            // Update running average and store times for deviation calculation
             const data = timeMap[key][nextKey];
             data.total += timeDiff;
             data.count++;
             data.times.push(timeDiff);
         }
-    };
+    }, [timeMap]);
+
+    const handleKeyUp = useCallback((event: KeyboardEvent) => {
+        const key = event.key.toLowerCase();
+        const currentTime = event.timeStamp;
+
+        if (homeRow.includes(key)) {
+            keyPressTimes[key] = { keyUpTime: currentTime };
+        }
+    }, [keyPressTimes, homeRow]);
+
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+        onKeyPress(event.key);
+        const nextKey = event.key.toLowerCase();
+        const currentTime = event.timeStamp;
+
+        for (const key in keyPressTimes) {
+            if (keyPressTimes[key].keyUpTime) {
+                const timeDiff = currentTime - keyPressTimes[key].keyUpTime;
+                updateTimeMap(key, nextKey, timeDiff);
+                delete keyPressTimes[key].keyUpTime;
+            }
+        }
+    }, [onKeyPress, keyPressTimes, updateTimeMap]);
 
     const processTimeMap = () => {
         const stats: { [key: string]: { [key: string]: { avgTime: number, deviation: number } } } = {};
@@ -66,7 +60,6 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
                 const data = timeMap[key][nextKey];
                 const avgTime = data.total / data.count;
 
-                // Calculate standard deviation
                 const variance = data.times.reduce((sum, t) => sum + Math.pow(t - avgTime, 2), 0) / data.count;
                 const deviation = Math.sqrt(variance);
 
@@ -91,7 +84,7 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
                 inputElement.removeEventListener('keyup', handleKeyUp);
             }
         };
-    }, [handleKeyDown]);
+    }, [handleKeyDown, handleKeyUp]);
 
     return (
         <div>
@@ -102,7 +95,6 @@ const KeyTracker: React.FC<KeyTrackerProps> = ({ onKeyPress, keyPressTimes, time
                 className="opacity-0 absolute top-0 left-0 w-px h-px"
             />
         </div>
-
     );
 };
 

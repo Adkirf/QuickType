@@ -16,9 +16,11 @@ function TrainingContent() {
 
   const renderContent = () => {
     switch (_viewState) {
-      case 'selecting' || 'submitted':
+      case 'selecting':
         return <FileSelection />;
-      case 'selected' || 'processing':
+      case 'submitted':
+        return <FileSelection />;
+      case 'selected':
         return (
           <MarkdownViewer
             content={_selectedFile?.content || ''}

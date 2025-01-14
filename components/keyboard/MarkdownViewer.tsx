@@ -6,7 +6,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import NewKeyTracker from './NewKeyTracker' // Import the NewKeyTracker component instead of KeyTracker
 import { Button } from '../ui/button'
 import { ArrowLeft } from 'lucide-react'
-import { ProcessedKeyData, KeyColor, KeyPerformance, KeyTimingStats } from '@/lib/projectTypes';
 import { useKeyboard } from "../context/KeyboardContext"
 
 interface MarkdownViewerProps {

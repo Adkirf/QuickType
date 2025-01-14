@@ -43,84 +43,13 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
     const { handleKeyColorsUpdate, _processing, handleProcessingFinished } = useKeyboard();
 
-
-    // Function to handle keyDown event
-    const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        onKeyPress(event.key);
-        const key = event.key.toLowerCase();
-        const currentTime = Date.now();
-
-        if (keyboardMap.leftKeys.includes(key)) {
-            leftKeySequence.current.push({ key, time: currentTime });
-            if (leftKeySequence.current.length >= 2) {
-                const switches = filterRegionSwitches(leftKeySequence.current);
-                calculateRegionSwitchSpeed(switches, 'left');
-            }
-            lastKeySide.current = 'left';
-        } else if (keyboardMap.rightKeys.includes(key)) {
-            rightKeySequence.current.push({ key, time: currentTime });
-            if (rightKeySequence.current.length >= 2) {
-                const switches = filterRegionSwitches(rightKeySequence.current);
-                calculateRegionSwitchSpeed(switches, 'right');
-            }
-            lastKeySide.current = 'right';
-        }
-    }, [onKeyPress]);
-
-    useEffect(() => {
-        const inputElement = inputRef.current;
-        if (inputElement) {
-            inputElement.focus();
-            inputElement.addEventListener('keydown', handleKeyDown);
-        }
-        return () => {
-            if (inputElement) {
-                inputElement.removeEventListener('keydown', handleKeyDown);
-            }
-        };
-    }, [handleKeyDown]);
-
-    useEffect(() => {
-
-        if (_processing) {
-            processTimeMap();
-        }
-    }, [_processing]);
-
-    const processTimeMap = useCallback(() => {
-        if (lastKeySide.current === 'left' && leftKeySequence.current.length >= 2) {
-            const switches = filterRegionSwitches(leftKeySequence.current);
-            calculateRegionSwitchSpeed(switches, 'left');
-        } else if (lastKeySide.current === 'right' && rightKeySequence.current.length >= 2) {
-            const switches = filterRegionSwitches(rightKeySequence.current);
-            calculateRegionSwitchSpeed(switches, 'right');
-        }
-
-        const processedData = Object.entries(regionSwitchData.current).reduce((acc, [homeKey, keyData]) => {
-            acc[homeKey] = Object.entries(keyData).reduce((keyAcc, [key1, key2Data]) => {
-                keyAcc[key1] = Object.entries(key2Data).reduce((key2Acc, [key2, timeDiffs]) => {
-                    if (timeDiffs.length > 0) {
-                        const average = timeDiffs.reduce((sum, time) => sum + time, 0) / timeDiffs.length;
-                        const stdDev = calculateStandardDeviation(timeDiffs, average);
-                        key2Acc[key2] = { average, stdDev };
-                    }
-                    return key2Acc;
-                }, {} as Record<string, KeyTimingStats>);
-                return keyAcc;
-            }, {} as Record<string, Record<string, KeyTimingStats>>);
-            return acc;
-        }, {} as ProcessedKeyData);
-
-        processKeyboardData(processedData);
-    }, [handleKeyColorsUpdate]);
-
     const calculateStandardDeviation = (numbers: number[], mean: number): number => {
         if (numbers.length < 2) return 0;
         const variance = numbers.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / (numbers.length - 1);
         return Math.sqrt(variance);
     };
 
-    const processKeyboardData = async (data: ProcessedKeyData) => {
+    const processKeyboardData = useCallback(async (data: ProcessedKeyData) => {
         console.log('Processing keyboard data:', data);
         const keyPerformance: { [key: string]: number } = {};
 
@@ -166,7 +95,7 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
             const quarterIndex = Math.floor(totalKeys / 4);
             const threeQuarterIndex = Math.floor(totalKeys * 3 / 4);
 
-            sortedTimes.forEach(([key, time], index) => {
+            sortedTimes.forEach(([key], index) => {
                 if (index < quarterIndex) {
                     keyColors[key] = 'green';
                 } else if (index >= threeQuarterIndex) {
@@ -179,10 +108,10 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
         handleKeyColorsUpdate(keyColors);
         handleProcessingFinished();
 
-    };
+    }, [handleKeyColorsUpdate, handleProcessingFinished]);
 
-    // Filter function to keep only finger region switches
-    function filterRegionSwitches(sequence: { key: string, time: number }[]) {
+    // Move filterRegionSwitches into useCallback
+    const filterRegionSwitches = useCallback((sequence: { key: string, time: number }[]) => {
         const switches = [];
         for (let i = 1; i < sequence.length; i++) {
             if (sequence[i - 1].key !== sequence[i].key && inDifferentRegion(sequence[i - 1].key, sequence[i].key)) {
@@ -190,31 +119,14 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
             }
         }
         return switches;
-    }
+    }, []); // No dependencies needed as it only uses internal functions
 
-    // Check if two keys are in different regions
-    function inDifferentRegion(key1: string, key2: string) {
-        const getFingerRegion = (key: string) => {
-            for (const [finger, keys] of Object.entries(keyboardMap.leftFingerRegions)) {
-                if (keys.includes(key.toLowerCase())) return finger;
-            }
-            for (const [finger, keys] of Object.entries(keyboardMap.rightFingerRegions)) {
-                if (keys.includes(key.toLowerCase())) return finger;
-            }
-            return null;
-        };
-
-        const region1 = getFingerRegion(key1);
-        const region2 = getFingerRegion(key2);
-
-        return region1 !== region2;
-    }
-
-    // Calculate average region switch speed and attribute it to the relevant home key
-    function calculateRegionSwitchSpeed(regionSwitches: { key: string, time: number }[], side: "left" | "right") {
+    // Move calculateRegionSwitchSpeed into useCallback
+    const calculateRegionSwitchSpeed = useCallback((regionSwitches: { key: string, time: number }[], side: "left" | "right") => {
         for (let i = 0; i < regionSwitches.length - 1; i += 2) {
-            const { key: key1, time: time1 } = regionSwitches[i];
+            const { key: key1 } = regionSwitches[i];
             const { key: key2, time: time2 } = regionSwitches[i + 1];
+            const time1 = regionSwitches[i].time;
             const timeDiff = time2 - time1;
 
             const homeKey = getHomeKeyForRegion(key1, side);
@@ -235,6 +147,24 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
 
             regionSwitchData.current[homeKey][key1][key2].push(timeDiff);
         }
+    }, [regionSwitchData]); // Only depend on regionSwitchData
+
+    // Check if two keys are in different regions
+    function inDifferentRegion(key1: string, key2: string) {
+        const getFingerRegion = (key: string) => {
+            for (const [finger, keys] of Object.entries(keyboardMap.leftFingerRegions)) {
+                if (keys.includes(key.toLowerCase())) return finger;
+            }
+            for (const [finger, keys] of Object.entries(keyboardMap.rightFingerRegions)) {
+                if (keys.includes(key.toLowerCase())) return finger;
+            }
+            return null;
+        };
+
+        const region1 = getFingerRegion(key1);
+        const region2 = getFingerRegion(key2);
+
+        return region1 !== region2;
     }
 
     // Function to map region to home key
@@ -251,6 +181,91 @@ const NewKeyTracker: React.FC<KeyTrackerProps> = ({
         // If the key is not found in any region, return an empty string or handle the error as needed
         return "";
     }
+
+    // Function to handle keyDown event
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+        onKeyPress(event.key);
+        const key = event.key.toLowerCase();
+        const currentTime = Date.now();
+
+        if (keyboardMap.leftKeys.includes(key)) {
+            leftKeySequence.current.push({ key, time: currentTime });
+            if (leftKeySequence.current.length >= 2) {
+                const switches = filterRegionSwitches(leftKeySequence.current);
+                calculateRegionSwitchSpeed(switches, 'left');
+            }
+            lastKeySide.current = 'left';
+        } else if (keyboardMap.rightKeys.includes(key)) {
+            rightKeySequence.current.push({ key, time: currentTime });
+            if (rightKeySequence.current.length >= 2) {
+                const switches = filterRegionSwitches(rightKeySequence.current);
+                calculateRegionSwitchSpeed(switches, 'right');
+            }
+            lastKeySide.current = 'right';
+        }
+    }, [
+        onKeyPress,
+        calculateRegionSwitchSpeed,
+        filterRegionSwitches,
+        lastKeySide,
+        leftKeySequence,
+        rightKeySequence
+    ]);
+
+    useEffect(() => {
+        const inputElement = inputRef.current;
+        if (inputElement) {
+            inputElement.focus();
+            inputElement.addEventListener('keydown', handleKeyDown);
+        }
+        return () => {
+            if (inputElement) {
+                inputElement.removeEventListener('keydown', handleKeyDown);
+            }
+        };
+    }, [handleKeyDown]);
+
+    const processTimeMap = useCallback(() => {
+        if (lastKeySide.current === 'left' && leftKeySequence.current.length >= 2) {
+            const switches = filterRegionSwitches(leftKeySequence.current);
+            calculateRegionSwitchSpeed(switches, 'left');
+        } else if (lastKeySide.current === 'right' && rightKeySequence.current.length >= 2) {
+            const switches = filterRegionSwitches(rightKeySequence.current);
+            calculateRegionSwitchSpeed(switches, 'right');
+        }
+
+        const processedData = Object.entries(regionSwitchData.current).reduce((acc, [homeKey, keyData]) => {
+            acc[homeKey] = Object.entries(keyData).reduce((keyAcc, [key1, key2Data]) => {
+                keyAcc[key1] = Object.entries(key2Data).reduce((key2Acc, [key2, timeDiffs]) => {
+                    if (timeDiffs.length > 0) {
+                        const average = timeDiffs.reduce((sum, time) => sum + time, 0) / timeDiffs.length;
+                        const stdDev = calculateStandardDeviation(timeDiffs, average);
+                        key2Acc[key2] = { average, stdDev };
+                    }
+                    return key2Acc;
+                }, {} as Record<string, KeyTimingStats>);
+                return keyAcc;
+            }, {} as Record<string, Record<string, KeyTimingStats>>);
+            return acc;
+        }, {} as ProcessedKeyData);
+
+        processKeyboardData(processedData);
+    }, [
+        calculateRegionSwitchSpeed,
+        filterRegionSwitches,
+        lastKeySide,
+        leftKeySequence,
+        processKeyboardData,
+        regionSwitchData,
+        rightKeySequence
+    ]);
+
+    useEffect(() => {
+
+        if (_processing) {
+            processTimeMap();
+        }
+    }, [_processing, processTimeMap]);
 
     return (
         <div>

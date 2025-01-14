@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Keyboard from "./Keyboard";
 
 export default function ExamSubmission() {
-    const { _selectedFile, _viewState, _keyColors, handleBackToFiles } = useKeyboard();
+    const { _keyColors, handleBackToFiles } = useKeyboard();
 
     return (
         <div className="flex flex-col items-center justify-center h-full">
